@@ -12,11 +12,13 @@ public class DepthFirstSearch {
 	private Stack probabilityStack = new Stack(); //Stack to track probability
 	
 	private int cardsRemaining; 
+	
 
 	// Used to instantiate card objects
 	private static String [] rankArray = {"2", "3", "4", "5", "6", "7", "8", "9", "T", "Jack", "Queen", "King", "Ace"};
 	private static int [] valArray = {2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10, 1};
 	private static ArrayList<Card> dealerCardArray = new ArrayList<Card>();
+
 	
 	// Absorbing states
 	private double state17;
@@ -24,29 +26,40 @@ public class DepthFirstSearch {
 	private double state19;
 	private double state20;
 	private double state21;
-	private double totalStates;
 	private double blackjack;
 	private double bust;
+	private double totalStates;
+
 	private double stateProbability;
 	
 	
+	private double [] stateArray = new double[7];
+	
 	
 	public DepthFirstSearch(Card dealerUpcard, int [] deckTally){
+		if (dealerCardArray.size() == 13){
+	
+		}
+		
+		else{
+			dealerCards(); 
+		}
 		//Card objects for constructing combinations
-		dealerCards(); 
+		
+		
 		
 		this.deckTally = deckTally;
 		
 		//state of deck before adding 2nd dealer card
 		deckState.push(deckTally.clone()); 
 		
-		// probability multiplier is initially set to 1 and pushed on stack
-		probabilityStack.push(1.0);
-		
 		// for all possible dealer downcards
 		for(int i = 0; i < dealerCardArray.size(); i++){ 
 			// Pushes probability of drawing card before decrementing decktally
 			probabilityStack.push(calculateProbability(i, deckTally));
+			
+			// Updates deckstate
+			deckTally = (int[]) deckState.peek();
 			
 			// Gets down-card and instantiates new dealer hand
 			Card downCard = dealerCardArray.get(i);
@@ -54,17 +67,20 @@ public class DepthFirstSearch {
 			
 			
 			//Pushes current deck distribution on to stack
-			deckState.push(this.deckTally.clone()); 
+			deckState.push(this.deckTally.clone());
 			this.deckTally[i]--;
-			
-			// PRINTS FOR DEBUGGIGN
-			//System.out.println(dealerHand.getHand());
-			//System.out.println(dealerHand.getFAHandValue());
 			
 			// Checks for blackjack
 			if (dealerHand.getFAHandValue() == 21){
-				blackjack+= 4.0/51.0; //temporarily hard-coded
+				blackjack+= calculateProbability(i, deckTally);
+				//blackjack+= 4.0/51.0; //temporarily hard-coded
 			}
+			
+			/** Print statements for debugging **/
+			//System.out.println(dealerHand.getHand());
+			//printDeckState(deckTally);
+			//System.out.println(dealerHand.getFAHandValue());
+			/** Print statements for debugging **/
 			
 			// If dealer does not have blackjack, begin depth first search
 			else{
@@ -73,7 +89,16 @@ public class DepthFirstSearch {
 		}
 		// Prints results of algorithm
 		totalStates = state17 + state18 + state19 + state20 + state21 + blackjack + bust;
-		System.out.println(totalStates + " The dealer busts " + bust + " percent of the time");
+		
+		stateArray[0] = state17;
+		stateArray[1] = state18;
+		stateArray[2] = state19;
+		stateArray[3] = state20;
+		stateArray[4] = state21;
+		stateArray[5] = blackjack;
+		stateArray[6] = bust;
+		
+		//System.out.println(totalStates + " The dealer busts " + bust + " percent of the time");
 	}
 	
 	public void combinatorialSearch(Hand dealerHand){
@@ -98,7 +123,6 @@ public class DepthFirstSearch {
 			
 			if (dealerHand.getFAHandValue() > 21){
 				bust += stateProbability;
-				//i += dealerCardArray.size() - i;
 			}
 			
 			// Backtracks dealer hand and deckstate
@@ -118,14 +142,15 @@ public class DepthFirstSearch {
 						probabilityStack.push(calculateProbability(i, deckTally)* (double)probabilityStack.peek());
 						
 						// Adds new dealer card and adjusts deckTally
-						dealerHand.dealerHit(dealerCardArray.get(i));
+						dealerHand.hit(dealerCardArray.get(i));
 						deckTally[i]--;
 						
 						
 						/** Print statements for debugging **/
-						System.out.println(dealerHand.getHand());
+						//System.out.println(dealerHand.getHand());
 						//printDeckState(deckTally);
 						//System.out.println("Dealer total: " + dealerHand.getFAHandValue());
+						/** Print statements for debugging **/
 						
 						// Calls combinatorial search recursively
 						combinatorialSearch(dealerHand);
@@ -170,12 +195,22 @@ public class DepthFirstSearch {
 	
 	// Builds array used to iteratively construct hand combinations	
 	public static void dealerCards(){
+		
 		for(int i = 0; i < rankArray.length; i++){
 			dealerCardArray.add(new Card(rankArray[i], valArray[i], "club"));
 		}
 	}
+	
+	public double [] getDealerStates(){
+//		for(double state: stateArray){
+//			System.out.println(state);
+//		}
+		
+		return stateArray;
+	}
+	
 }
 
-	
+
 	
 

@@ -16,7 +16,7 @@ public class Hand{
 		handArray.add(card2);
 	}
 	
-	public void dealerHit(Card newCard){
+	public void hit(Card newCard){
 		handArray.add(newCard);
 	}
 	
@@ -41,7 +41,7 @@ public class Hand{
 				return true;}
 		return false;
 	}
-	public Card getIt(int i){
+	public Card getCard(int i){
 		return handArray.get(i);
 	}
 	

@@ -3,14 +3,30 @@ import java.util.*;
 
 
 public class ReadDeck {
-	public Card [][] allDecks;
-
+//	public Card [][] allDecks;
+	public Deck [] allDecks;	
+	public Card [] tempDeck;
 	public ReadDeck() throws FileNotFoundException{
-		allDecks = new Card[250000][52];
+		allDecks = new Deck[250000];
+		tempDeck = new Card[52];
 		Scanner fileScanner = new Scanner(new File("HandData.txt"));
-		for (int rows=0;rows<250;rows++)
-			for (int cols=0;cols<52;cols++)
-				allDecks[rows][cols]=cardBuild(fileScanner.next());
+		for (int rows=0;rows<250000;rows++){
+			//System.out.println(rows);
+			for (int cols=0;cols<52;cols++){
+				tempDeck[cols]=cardBuild(fileScanner.next());
+			}
+			allDecks[rows] = new Deck(tempDeck);
+		}
+		fileScanner.close();
+		
+				
+//		allDecks = new Card[250000][52];
+//		Scanner fileScanner = new Scanner(new File("HandData.txt"));
+//		for (int rows=0;rows<175000;rows++){
+//			System.out.println(rows);
+//			for (int cols=0;cols<52;cols++)
+//				allDecks[rows][cols]=cardBuild(fileScanner.next());
+//		}
 	}
 	public Card cardBuild(String n){
 		String suit;
