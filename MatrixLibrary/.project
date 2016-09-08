@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+	<name>MatrixLibrary</name>
+	<comment></comment>
+	<projects>
+	</projects>
+	<buildSpec>
+		<buildCommand>
+			<name>org.eclipse.jdt.core.javabuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+	</buildSpec>
+	<natures>
+		<nature>org.eclipse.jdt.core.javanature</nature>
+	</natures>
+	<linkedResources>
+		<link>
+			<name>tonedataA.txt</name>
+			<type>1</type>
+			<locationURI>PROJECT_LOC/tonedataA.txt</locationURI>
+		</link>
+		<link>
+			<name>tonedataB.txt</name>
+			<type>1</type>
+			<locationURI>PROJECT_LOC/tonedataB.txt</locationURI>
+		</link>
+		<link>
+			<name>tonedataC.txt</name>
+			<type>1</type>
+			<locationURI>PROJECT_LOC/tonedataC.txt</locationURI>
+		</link>
+		<link>
+			<name>tonedataD.txt</name>
+			<type>1</type>
+			<locationURI>PROJECT_LOC/tonedataD.txt</locationURI>
+		</link>
+	</linkedResources>
+</projectDescription>
